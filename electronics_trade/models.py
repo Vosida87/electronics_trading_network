@@ -21,7 +21,7 @@ class Participant(models.Model):
     debt_to_supplier = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Задолженность поставщику',
                                            **NULLABLE)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
-    level = models.IntegerField(verbose_name='Уровень в иерархии', editable=False)
+    level = models.IntegerField(verbose_name='Уровень в иерархии')
 
     class Meta:
         """
@@ -51,6 +51,8 @@ class Participant(models.Model):
         """
         if self.participant_type == 'Завод' and self.level != 0:
             raise ValidationError("Завод может иметь только уровень 0")
+        elif self.participant_type == 'Завод' and self.supplier:
+            raise ValidationError("У завода не может быть поставщика")
         elif self.participant_type in ['Розничная сеть', 'Индивидуальный предприниматель'] and self.level == 0:
             raise ValidationError("Только завод может иметь уровень 0")
         super().clean()

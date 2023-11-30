@@ -49,7 +49,12 @@ class ParticipantTest(TestCase):
         """
         invalid_participants = [
             Participant(name='Invalid_factory', participant_type='Завод', level=1),  # у завода level не может быть > 0
-            Participant(name='Invalid_retail', participant_type='Розничная сеть', level=0)  # только у завода level = 0
+            Participant(name='Invalid_retail', participant_type='Розничная сеть', level=0),  # только у завода level = 0
+            Participant(
+                name='Invalid_factory2',
+                participant_type='Завод',
+                level=0,
+                supplier=Participant(name='Invalid_factory'))  # У завода не может быть поставщика
         ]
         for participant in invalid_participants:
             with self.assertRaises(ValidationError):

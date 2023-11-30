@@ -1,0 +1,9 @@
+# Инфо для доступа к базе данных
+DB_ENGINE='django.db.backends.postgresql'
+DB_NAME='trading_network_database'
+DB_USER='postgres'
+DB_PASSWORD='password'
+HOST='localhost'
+
+# django secret key
+SECRET_KEY='qwerty'
