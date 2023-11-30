@@ -1,5 +1,5 @@
 from django.test import TestCase
-from electronics_trade.models import Participant
+from electronics_trade.models import Participant, Contacts, Product
 from rest_framework.exceptions import ValidationError
 
 
@@ -59,3 +59,43 @@ class ParticipantTest(TestCase):
         for participant in invalid_participants:
             with self.assertRaises(ValidationError):
                 participant.clean()
+
+
+class ContactsTest(TestCase):
+    def setUp(self):
+        self.factory = Participant.objects.create(
+            name='Factory',
+            participant_type='Завод',
+            level=0
+        )
+        self.factory_city = Contacts.objects.create(
+            participant=self.factory,
+            city='city1'
+        )
+
+    def test_str_representation(self):
+        """
+        Проверяет, что метод __str__ возвращает правильное представление участника
+        """
+        self.assertEqual(str(self.factory_city), 'Контакты Участник: Factory')
+
+
+class ProductsTest(TestCase):
+    def setUp(self):
+        self.factory = Participant.objects.create(
+            name='Factory',
+            participant_type='Завод',
+            level=0
+        )
+        self.factory_product = Product.objects.create(
+            owner=self.factory,
+            title='product1',
+            model='model1',
+            release_date='2023-10-10'
+        )
+
+    def test_str_representation(self):
+        """
+        Проверяет, что метод __str__ возвращает правильное представление участника
+        """
+        self.assertEqual(str(self.factory_product), 'Продукт: product1, Участник: Factory')
